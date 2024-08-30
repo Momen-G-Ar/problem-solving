@@ -12,30 +12,44 @@ const double PI = 3.14159265359;
 int dx[] = { -2, -2, -1, -1, +1, +1, +2, +2};
 int dy[] = { -1, +1, -2, +2, -2, +2, -1, +1};
 
+// File creation time: Sat 10/28/2023 16:42:12.97
 // Website: Codeforces
-// Problem: 899 (Div. 2) - C
+// Problem: 906 (Div 2) - B
 
-int n;
+bool check(string s)
+{
+    for (int i = 0; i < s.size() - 1; i++)
+    {
+        if (s[i] == s[i + 1])
+            return false;
+    }
+    return true;
+}
 
 void solve(int T)
 {
-    int n;  cin >> n;
-    vector <int> v(n);
-    for (int &i : v)
-        cin >> i;
-    vector <long long> c(n + 1);
-    for (int i = n - 1; i >= 0; i--)
-        c[i] = c[i + 1] + (v[i] > 0 ? v[i] : 0) * 1LL;
+    int n, m; cin >> n >> m;
+    string s, t; cin >> s >> t;
 
-    long long ans = 0;
-    for (int i = 0; i < n; i++)
+    bool ss = check(s), tt = check(t);
+    if (!ss && !tt)
+        return printf("No\n"), void();
+    if (ss)
+        return printf("Yes\n"), void();
+    bool z = 0, o = 0;
+    for (int i = 0; i < s.size() - 1; i++)
     {
-        if ((i + 1) & 1)
-            ans = max(ans, c[i + 1 - (v[i] > 0)] + (v[i] < 0 ? v[i] : 0) * 1LL);
-        else
-            ans = max(ans, c[i + 1]);
+        o |= ((s[i] == s[i + 1]) && (s[i] == '1'));
+        z |= ((s[i] == s[i + 1]) && (s[i] == '0'));
     }
-    cout << ans << '\n';
+
+    for (int i = 0; i < s.size() - 1; i++)
+    {
+        if (s[i] == s[i + 1] && (t[0] == s[i] || t[m - 1] == s[i + 1]))
+            return printf("No\n"), void();
+    }
+
+    printf("Yes\n");
 }
 
 int32_t main()

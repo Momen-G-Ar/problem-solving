@@ -12,30 +12,45 @@ const double PI = 3.14159265359;
 int dx[] = { -2, -2, -1, -1, +1, +1, +2, +2};
 int dy[] = { -1, +1, -2, +2, -2, +2, -1, +1};
 
+// File creation time: Sun 11/26/2023 17:10:22.09
 // Website: Codeforces
-// Problem: 899 (Div. 2) - C
+// Problem: 911 (Div 2) - C
 
-int n;
+void dfs(int node, int ans, vector <pair <int, int>>& adj, vector <int>& val, string &s)
+{
+    if (adj[node].first == 0 && adj[node].second == 0)
+        return val[node] = ans, void();
+
+    if (adj[node].first)
+    {
+        dfs(adj[node].first,
+            ans + (s[node - 1] != 'L'),
+            adj, val, s);
+    }
+
+    if (adj[node].second)
+    {
+        dfs(adj[node].second,
+            ans + (s[node - 1] != 'R'),
+            adj, val, s);
+    }
+}
+
 
 void solve(int T)
 {
-    int n;  cin >> n;
-    vector <int> v(n);
-    for (int &i : v)
-        cin >> i;
-    vector <long long> c(n + 1);
-    for (int i = n - 1; i >= 0; i--)
-        c[i] = c[i + 1] + (v[i] > 0 ? v[i] : 0) * 1LL;
-
-    long long ans = 0;
-    for (int i = 0; i < n; i++)
+    int n; cin >> n;
+    string s; cin >> s;
+    vector <pair <int, int>> adj(n + 1);
+    vector <int> val(n + 1, INT_MAX);
+    for (int i = 1; i <= n; ++i)
     {
-        if ((i + 1) & 1)
-            ans = max(ans, c[i + 1 - (v[i] > 0)] + (v[i] < 0 ? v[i] : 0) * 1LL);
-        else
-            ans = max(ans, c[i + 1]);
+        int l, r; cin >> l >> r;
+        adj[i] = {l, r};
     }
-    cout << ans << '\n';
+
+    dfs(1, 0, adj, val, s);
+    cout << *min_element(begin(val), end(val)) << '\n';
 }
 
 int32_t main()

@@ -12,30 +12,44 @@ const double PI = 3.14159265359;
 int dx[] = { -2, -2, -1, -1, +1, +1, +2, +2};
 int dy[] = { -1, +1, -2, +2, -2, +2, -1, +1};
 
+// File creation time: Tue 11/07/2023 16:36:04.80
 // Website: Codeforces
-// Problem: 899 (Div. 2) - C
-
-int n;
+// Problem: 908 (Div 2) - A
 
 void solve(int T)
 {
-    int n;  cin >> n;
-    vector <int> v(n);
-    for (int &i : v)
-        cin >> i;
-    vector <long long> c(n + 1);
-    for (int i = n - 1; i >= 0; i--)
-        c[i] = c[i + 1] + (v[i] > 0 ? v[i] : 0) * 1LL;
-
-    long long ans = 0;
-    for (int i = 0; i < n; i++)
+    int n; cin >> n;
+    string s; cin >> s;
+    for (int y = 1; y <= 20; y++)
     {
-        if ((i + 1) & 1)
-            ans = max(ans, c[i + 1 - (v[i] > 0)] + (v[i] < 0 ? v[i] : 0) * 1LL);
-        else
-            ans = max(ans, c[i + 1]);
+        for (int x = 1; x <= 20; x++)
+        {
+            // cout << x << " " << y << endl;
+            int cnta = 0, cntb = 0;
+            int wina = 0, winb = 0;
+            for (int i = 0; i < n; i++)
+            {
+                cnta += (s[i] == 'A');
+                cntb += (s[i] == 'B');
+
+                if (cnta == x)
+                    wina++, cnta = 0, cntb = 0;
+                if (cntb == x)
+                    winb++, cnta = 0, cntb = 0;
+
+                if (wina == y && (cnta == 0 && cntb == 0 && i == n - 1))
+                    return printf("A\n"), void();
+                else if (wina == y)
+                    break;
+                if (winb == y && (cnta == 0 && cntb == 0 && i == n - 1))
+                    return printf("B\n"), void();
+                else if (winb == y)
+                    break;
+            }
+        }
     }
-    cout << ans << '\n';
+    printf("?\n");
+
 }
 
 int32_t main()

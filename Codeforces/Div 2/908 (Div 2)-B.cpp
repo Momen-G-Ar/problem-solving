@@ -12,30 +12,62 @@ const double PI = 3.14159265359;
 int dx[] = { -2, -2, -1, -1, +1, +1, +2, +2};
 int dy[] = { -1, +1, -2, +2, -2, +2, -1, +1};
 
+// File creation time: Tue 11/07/2023 17:02:12.13
 // Website: Codeforces
-// Problem: 899 (Div. 2) - C
-
-int n;
+// Problem: 908 (Div 2) - B
 
 void solve(int T)
 {
-    int n;  cin >> n;
+    int n; cin >> n;
     vector <int> v(n);
+    map <int, int> m;
     for (int &i : v)
-        cin >> i;
-    vector <long long> c(n + 1);
-    for (int i = n - 1; i >= 0; i--)
-        c[i] = c[i + 1] + (v[i] > 0 ? v[i] : 0) * 1LL;
+        cin >> i, m[i]++;
 
-    long long ans = 0;
+    vector <int> b(n, 1);
+    int taken = -1;
+    for (int i = 0; i < n; ++i)
+    {
+        if (m[v[i]] > 1)
+        {
+            b[i] = 2;
+            taken = v[i];
+            break;
+        }
+    }
+    for (int i = 0; i < n; ++i)
+    {
+        if (m[v[i]] > 1 && v[i] != taken)
+        {
+            b[i] = 3;
+            break;
+        }
+    }
+    bool ok1 = 0, ok2 = 0, ok3 = 0;
     for (int i = 0; i < n; i++)
     {
-        if ((i + 1) & 1)
-            ans = max(ans, c[i + 1 - (v[i] > 0)] + (v[i] < 0 ? v[i] : 0) * 1LL);
-        else
-            ans = max(ans, c[i + 1]);
+        for (int j = 0; j < n; j++)
+        {
+            if (i != j && v[i] == v[j] && b[i] == 1 && b[j] == 2)
+                ok1 = true;
+            if (i != j && v[i] == v[j] && b[i] == 1 && b[j] == 3)
+                ok2 = true;
+            if (i != j && v[i] == v[j] && b[i] == 2 && b[j] == 3)
+                ok3 = true;
+        }
     }
-    cout << ans << '\n';
+
+    if ((ok1 && ok2 && !ok3)  || (ok2 && ok3 && !ok1) || (ok1 && ok3 && !ok2))
+    {
+        for (int i = 0; i < n; i++)
+            cout << b[i] << " ";
+        cout << '\n';
+    }
+    else
+        return cout << "-1\n", void();
+
+
+
 }
 
 int32_t main()
