@@ -65,15 +65,10 @@ void build(int x, int l, int r)
 
 int get(int x, int l, int r, int ll, int rr, int num)
 {
-    // cout << x << " " << l << " " << r << " " << ll << " " << rr << endl;
     if (l > rr || r < ll)
-    {
-        // cout << 1 << endl;
         return INT_MAX;
-    }
     if (ll <= l && r <= rr)
     {
-        // cout << 2 << " " << tree[x].mn << " " << tree[x].mx << endl;
         if (tree[x].mx != num)
             return tree[x].mxi;
         else if (tree[x].mn != num)
@@ -81,7 +76,6 @@ int get(int x, int l, int r, int ll, int rr, int num)
         else
             return INT_MAX;
     }
-    // cout << 3 << endl;
     int mid = (l + r) / 2;
     int x1 = get(2 * x, l, mid, ll, rr, num);
     if (x1 != INT_MAX)
@@ -101,8 +95,6 @@ void solve(int T)
         cin >> v[i];
     tree.assign(4 * n, {INT_MAX, INT_MAX, INT_MAX, INT_MAX});
     build(1, 0, n - 1);
-    // for (auto x : tree)
-    //     cout << x.mn << " " << x.mx << " " << x.mni << " " << x.mxi << endl;
     while (q--)
     {
         int l, r, num; cin >> l >> r >> num;
